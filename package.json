@@ -1,0 +1,11 @@
+{
+	"name": "netflop",
+	"version": "1.0.0",
+	"description": "Netflix knockoff",
+	"type": "module",
+	"main": "index.js",
+	"scripts": {},
+	"dependencies": {
+		"dotenv": "^17.2.2"
+	}
+}
