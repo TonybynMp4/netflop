@@ -4,8 +4,10 @@
 	"description": "Netflix knockoff",
 	"type": "module",
 	"main": "index.js",
-	"scripts": {},
-	"dependencies": {
-		"dotenv": "^17.2.2"
+	"scripts": {
+		"start": "http-server -p 3000"
+	},
+	"devDependencies": {
+		"http-server": "^14.1.1"
 	}
 }
