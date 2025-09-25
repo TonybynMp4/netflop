@@ -46,12 +46,28 @@ export async function fetchPopularTV({ page = 1, language = 'fr-FR' } = {}) {
 	return data.results || [];
 }
 
-export async function fetchMovieDetails(id, { language = 'fr-FR' } = {}) {
-	return tmdb(`movie/${id}`, { language });
+export async function fetchMovieDetails(id, { language = 'fr-FR', append = '' } = {}) {
+	const params = { language };
+	if (append) params.append_to_response = append;
+	return tmdb(`movie/${id}`, params);
 }
 
-export async function fetchTvDetails(id, { language = 'fr-FR' } = {}) {
-	return tmdb(`tv/${id}`, { language });
+export async function fetchTvDetails(id, { language = 'fr-FR', append = '' } = {}) {
+	const params = { language };
+	if (append) params.append_to_response = append;
+	return tmdb(`tv/${id}`, params);
+}
+
+export async function fetchTvSeason(tvId, seasonNumber, { language = 'fr-FR' } = {}) {
+	return tmdb(`tv/${tvId}/season/${seasonNumber}`, { language });
+}
+
+export async function fetchMovieCredits(id, { language = 'fr-FR' } = {}) {
+	return tmdb(`movie/${id}/credits`, { language });
+}
+
+export async function fetchTvCredits(id, { language = 'fr-FR' } = {}) {
+	return tmdb(`tv/${id}/credits`, { language });
 }
 
 export const TMDB = {

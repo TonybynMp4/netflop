@@ -13,12 +13,16 @@ export function addShowCard(container, item, { wide = false } = {}) {
 	const posterPath = item.poster_path || item.backdrop_path;
 	const poster = imageUrl(posterPath, wide ? 'w780' : 'w342') || 'https://placehold.co/400x600?text=No+Image';
 
+	const type = item.media_type || (item.first_air_date ? 'tv' : 'movie');
+	const href = `/details.html?type=${type}&id=${encodeURIComponent(item.id)}`;
 	card.innerHTML = `
-        <img class="poster shimmer" alt="${escapeHtml(title)}" loading="lazy" src="${poster}" />
-        <div class="info">
-            <h3 class="title">${escapeHtml(title)}</h3>
-        </div>
-    `;
+		<a href="${href}" class="card-link" aria-label="Voir ${escapeHtml(title)}">
+			<img class="poster shimmer" alt="${escapeHtml(title)}" loading="lazy" src="${poster}" />
+			<div class="info">
+				<h3 class="title">${escapeHtml(title)}</h3>
+			</div>
+		</a>
+	`;
 	container.appendChild(card);
 }
 
@@ -80,10 +84,10 @@ export async function initHome() {
 						${vote ? `<span class="badge rating">★ ${vote}</span>` : ''}
 					</div>
                     ${overview ? `<p class="hero-overview">${overview.length > 220 ? overview.slice(0, 217) + '…' : overview}</p>` : ''}
-                    <div class="hero-actions">
-                        <a class="button primary" data-action="play" rel="noopener">Lecture</a>
-                        <a class="button" href="/movie.html?id=${top.id}" rel="noopener">Plus d'infos</a>
-                    </div>
+					<div class="hero-actions">
+						<a class="button primary" data-action="play" rel="noopener">Lecture</a>
+						<a class="button" href="/details.html?type=movie&id=${top.id}" rel="noopener">Plus d'infos</a>
+					</div>
                 </div>
             `;
 
@@ -101,7 +105,7 @@ export async function initHome() {
 			}
 		}
 
-		const playBtn = hero.querySelector('.hero-actions .btn.btn-primary[data-action="play"]');
+		const playBtn = hero.querySelector('.hero-actions .button.primary[data-action="play"]');
 		if (playBtn) {
 			if (videoId) {
 				playBtn.href = `https://www.youtube.com/watch?v=${videoId}`;

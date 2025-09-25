@@ -94,6 +94,7 @@ export async function createBackgroundPlayer(container, videoId, extraVars = {})
                     // Mute required for autoplay on most browsers
                     e.target.mute();
                     e.target.playVideo();
+					e.target.setPlaybackQuality('hd1080');
                 } catch (_) { /* noop */ }
             },
             onStateChange: (e) => {
@@ -101,6 +102,9 @@ export async function createBackgroundPlayer(container, videoId, extraVars = {})
                 if (e.data === window.YT.PlayerState.ENDED) {
                     try { e.target.playVideo(); } catch (_) { /* noop */ }
                 }
+				if (e.data == YT.PlayerState.PLAYING) {
+					e.target.setPlaybackQuality('hd1080');
+				}
             }
         }
     });

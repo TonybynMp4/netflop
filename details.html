@@ -1,13 +1,21 @@
 <!doctype html>
 <html lang="fr" data-theme="dark">
+
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 	<meta name="color-scheme" content="dark light" />
-	<title>NetFlop</title>
-	<link rel="stylesheet" href="style/home.css" />
-	<script src="index.js" type="module"></script>
+	<title>Détails • NetFlop</title>
+	<link rel="stylesheet" href="./style/home.css" />
+	<link rel="stylesheet" href="./style/details.css" />
+	<script type="module" src="./js/details.js"></script>
+	<link rel="preconnect" href="https://www.youtube-nocookie.com">
+	<link rel="preconnect" href="https://i.ytimg.com">
+	<link rel="preconnect" href="https://image.tmdb.org">
+	<link rel="icon" href="assets/images/logo.png" />
+	<meta name="robots" content="noindex" />
 </head>
+
 <body>
 	<header>
 		<div>
@@ -16,13 +24,13 @@
 			</a>
 
 			<nav class="primary-nav" aria-label="Navigation principale">
-				<a class="nav-tab is-active" href="#home">Accueil</a>
+				<a class="nav-tab" href="/index.html#home">Accueil</a>
 				<a class="nav-tab" href="/browse">Parcourir</a>
 				<a class="nav-tab" href="/watchlist">Ma liste</a>
 			</nav>
 
 			<div class="theme-switcher" role="group" aria-label="Changer de thème">
-				<button class="chip" data-value="dark" aria-pressed="true">
+				<button class="chip" data-value="dark" aria-pressed="true" title="Thème sombre">
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
 						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
 						class="lucide lucide-moon-icon lucide-moon">
@@ -30,7 +38,7 @@
 							d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" />
 					</svg>
 				</button>
-				<button class="chip" data-value="light">
+				<button class="chip" data-value="light" title="Thème clair">
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
 						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
 						class="lucide lucide-sun-dim-icon lucide-sun-dim">
@@ -45,7 +53,7 @@
 						<path d="M6.343 6.343h.01" />
 					</svg>
 				</button>
-				<button class="chip" data-value="sepia">
+				<button class="chip" data-value="sepia" title="Mode cinéma">
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
 						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
 						class="lucide lucide-film-icon lucide-film">
@@ -64,33 +72,38 @@
 
 		<nav class="breadcrumb" aria-label="Fil d'Ariane">
 			<ol>
-				<li><a href="#home">Accueil</a></li>
+				<li><a href="/index.html#home">Accueil</a></li>
+				<li id="breadcrumb-type"></li>
 				<li aria-current="page" id="breadcrumb-current"></li>
 			</ol>
 		</nav>
 	</header>
 
 	<main id="main">
-		<section id="home" class="section hero" aria-label="">
+		<section id="hero" class="section hero" aria-label=""></section>
+
+		<section class="section">
+			<div class="section-header">
+				<h3>Synopsis</h3>
+			</div>
+			<div id="overview"></div>
 		</section>
 
-		<section id="series" class="section" aria-label="Séries populaires">
-			<div class="section-header ">
-				<h2>Séries populaires</h2>
+		<section id="episodes" class="section episodes" hidden>
+			<div class="section-header">
+				<h3>Épisodes</h3>
+				<label>
+					<select id="season-select" class="select" aria-label="Sélection de la saison"></select>
+				</label>
 			</div>
-
-			<div class="media-row ">
-				<!-- Rempli par le js -->
-			</div>
+			<div id="episodes-list" class="episodes-list"></div>
 		</section>
 
-		<section id="films" class="section" aria-label="Films tendances">
-			<div class="section-header ">
-				<h2>Films tendances</h2>
+		<section id="cast" class="section" hidden>
+			<div class="section-header">
+				<h3>Casting principal</h3>
 			</div>
-			<div class="media-row ">
-				<!-- Rempli par le js -->
-			</div>
+			<div id="cast-grid" class="cast-grid"></div>
 		</section>
 	</main>
 
@@ -102,4 +115,5 @@
 		</nav>
 	</footer>
 </body>
+
 </html>
