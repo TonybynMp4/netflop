@@ -6,7 +6,7 @@ export function addShowCard(container, item, { wide = false } = {}) {
     const existingCards = container.getElementsByClassName('media-card').length;
     const card = document.createElement('article');
     card.className = `media-card${wide ? ' wide' : ''}`;
-    card.tabIndex = 0;
+    card.tabIndex = existingCards;
 
     const title = item.title || item.name || 'Sans titre';
     const posterPath = item.poster_path || item.backdrop_path;
