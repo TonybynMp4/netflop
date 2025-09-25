@@ -1,6 +1,7 @@
-import { fetchPopularTV, fetchTrendingMovies } from "./js/api.js";
+import { fetchPopularTV, fetchTrendingMovies, getTrailer } from "./js/api.js";
 import { renderList } from "./js/dom.js";
 import { loadTheme, setupThemeSwitcher } from "./js/theme.js";
+import { createBackgroundPlayer } from "./js/youtube.js";
 
 window.addEventListener('DOMContentLoaded', () => {
     loadTheme();
@@ -29,18 +30,33 @@ async function initHome() {
         const moviesContainer = document.querySelector('#films .media-row');
         renderList(moviesContainer, movies);
 
-        // Hero: première tendance
         const hero = document.querySelector('#home');
         if (hero && movies && movies.length) {
-            const top = movies[2];
-			console.log(top);
+            const top = movies[0];
+			//const details = await fetchMovieDetails(top.id);
+            const title = (top.title || top.name || 'Tendances');
             const backdrop = top.backdrop_path ? `https://image.tmdb.org/t/p/w1280${top.backdrop_path}` : '';
-            hero.style.background = backdrop ? `url('${backdrop}') center/cover no-repeat` : 'var(--bg-elev)';
-			hero.innerHTML = `
+
+            hero.innerHTML = `
+                <div class="hero-video" aria-hidden="true"></div>
                 <div class="hero-content">
-                    <h1>${(top.title || top.name || 'Tendances')}</h1>
+                    <h1>${title}</h1>
                 </div>
             `;
+
+            // Fallback image while loading
+            hero.style.background = backdrop ? `url('${backdrop}') center/cover no-repeat` : 'var(--bg-elev)';
+
+            const trailer = await getTrailer(top.id);
+            const videoContainer = hero.querySelector('.hero-video');
+            const videoId = trailer?.key || null;
+            if (videoContainer && videoId) {
+                try {
+                    await createBackgroundPlayer(videoContainer, videoId);
+                } catch (e) {
+                    console.warn('YT background failed, keeping image backdrop', e);
+                }
+            }
         }
     } catch (err) {
         console.error('Erreur de chargement TMDB:', err);

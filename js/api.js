@@ -31,9 +31,9 @@ export function imageUrl(path, size = 'w342') {
 	return `${IMAGE_BASE_URL}/${size}${path}`;
 }
 
-export async function getTrailer(id, { language = 'fr-FR' }) {
-	const { results: videos } = await tmdb(`movie/${id}/videos`, { language });
-	return videos.find(v => v.type === 'Trailer' && v.iso_639_1 === 'fr') || null;
+export async function getTrailer(id) {
+	const { results: videos } = await tmdb(`movie/${id}/videos`, { language: 'en-US' });
+	return videos.find(v => v.type === 'Trailer' && v.official) || null;
 }
 
 export async function fetchTrendingMovies({ time_window = 'day', page = 1, language = 'fr-FR' } = {}) {
