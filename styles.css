@@ -93,13 +93,13 @@ body {
 }
 
 *::-webkit-scrollbar {
-    width: .1rem;
+	width: .1rem;
 	height: .1rem;
 }
 
 *::-webkit-scrollbar-thumb {
-    background: var(--muted-border);
-    border-radius: 4px
+	background: var(--muted-border);
+	border-radius: 4px
 }
 
 main {
@@ -235,9 +235,10 @@ header {
 	margin-top: 1rem;
 	min-height: 30vh;
 	place-items: end start;
-	aspect-ratio: 1.85/1 ;
+	aspect-ratio: 1.85/1;
 	overflow: hidden;
 	border-radius: var(--radius-lg);
+	padding: 0;
 
 	/* bordure en overlay, sinon c'est caché par l'image */
 	&::after {
@@ -247,6 +248,7 @@ header {
 		border-radius: inherit;
 		border: 2px solid var(--muted-border);
 		z-index: 1;
+		pointer-events: none;
 	}
 
 	h1 {
