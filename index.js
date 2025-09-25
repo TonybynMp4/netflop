@@ -47,7 +47,7 @@ async function initHome() {
             // Fallback image while loading
             hero.style.background = backdrop ? `url('${backdrop}') center/cover no-repeat` : 'var(--bg-elev)';
 
-            const trailer = await getTrailer(top.id);
+            const trailer = await getTrailer(top.id, 'movie');
             const videoContainer = hero.querySelector('.hero-video');
             const videoId = trailer?.key || null;
             if (videoContainer && videoId) {

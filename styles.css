@@ -283,6 +283,7 @@ header {
 	h1 {
 		font-size: clamp(1.5rem, 7vw, 3rem);
 		margin: 0 0 8px;
+		font-size: 2rem;
 		letter-spacing: -0.02em;
 	}
 

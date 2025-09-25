@@ -11,7 +11,7 @@ function buildUrl(path, params = {}) {
 	return url.toString();
 }
 
-async function tmdb(path, params = {}) {
+async function tmdb(path, params) {
 	const url = buildUrl(path, params);
 	const res = await fetch(url, {
 		headers: {
@@ -31,18 +31,18 @@ export function imageUrl(path, size = 'w342') {
 	return `${IMAGE_BASE_URL}/${size}${path}`;
 }
 
-export async function getTrailer(id) {
-	const { results: videos } = await tmdb(`movie/${id}/videos`, { language: 'en-US' });
+export async function getTrailer(id, type = 'movie') {
+	const { results: videos } = await tmdb(`${type}/${id}/videos`, { language: 'en-US' });
 	return videos.find(v => v.type === 'Trailer' && v.official) || null;
 }
 
-export async function fetchTrendingMovies({ time_window = 'day', page = 1, language = 'fr-FR' } = {}) {
+export async function fetchTrendingMovies({ time_window = 'week', page = 1, language = 'fr-FR' } = {}) {
 	const data = await tmdb(`trending/movie/${time_window}`, { page, language });
 	return data.results || [];
 }
 
 export async function fetchPopularTV({ page = 1, language = 'fr-FR' } = {}) {
-	const data = await tmdb('tv/popular', { page, language });
+	const data = await tmdb('tv/popular', { page, language, region: 'FR' });
 	return data.results || [];
 }
 
