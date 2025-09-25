@@ -1,15 +1,11 @@
+import { fetchPopularTV, fetchTrendingMovies } from "./js/api.js";
+import { renderList } from "./js/dom.js";
 import { loadTheme, setupThemeSwitcher } from "./js/theme.js";
 
 window.addEventListener('DOMContentLoaded', () => {
     loadTheme();
     setupThemeSwitcher();
-    setupNavIndicator();
-    setupHeaderAndActiveSection();
-/* 	shows.forEach(show => {
-		const el = document.getElementById('series').getElementsByClassName('media-row')[0];
-		addShowCard(el, show);
-	});
- */
+    initHome();
     // If URL has a hash, ensure correct section is active and visible
     const hash = window.location.hash;
     if (hash) {
@@ -20,70 +16,33 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-function setupNavIndicator() {
-    const nav = document.getElementsByClassName('primary-nav')[0];
-    const indicator = nav?.getElementsByClassName('nav-indicator')[0];
-    if (!nav || !indicator) return;
+async function initHome() {
+    try {
+        const [tv, movies] = await Promise.all([
+            fetchPopularTV({ page: 1, language: 'fr-FR' }),
+            fetchTrendingMovies({ time_window: 'week', page: 1, language: 'fr-FR' })
+        ]);
 
-    function positionIndicator(el) {
-        const rect = el.getBoundingClientRect();
-        const parentRect = nav.getBoundingClientRect();
-        const x = rect.left - parentRect.left;
-        indicator.style.width = rect.width + 'px';
-        indicator.style.transform = `translateX(${x}px)`;
-    }
+        const tvContainer = document.querySelector('#series .media-row');
+        renderList(tvContainer, tv);
 
-    const tabs = [...nav.querySelectorAll('.nav-tab')];
-    const active = tabs.find(t => t.classList.contains('is-active')) || tabs[0];
-    positionIndicator(active);
+        const moviesContainer = document.querySelector('#films .media-row');
+        renderList(moviesContainer, movies);
 
-    tabs.forEach(tab => tab.addEventListener('click', (e) => {
-        const href = tab.getAttribute('href');
-        if (!href?.startsWith('#')) return;
-        e.preventDefault();
-        const targetEl = document.querySelector(href);
-        if (!targetEl) return;
-        tabs.forEach(t => t.classList.remove('is-active'));
-        tab.classList.add('is-active');
-        positionIndicator(tab);
-        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        history.replaceState(null, '', href);
-    }));
-
-    window.addEventListener('resize', () => {
-        const current = nav.querySelector('.nav-tab.is-active') || tabs[0];
-        positionIndicator(current);
-    });
-}
-
-function setupHeaderAndActiveSection() {
-    const sections = document.querySelectorAll('main .section');
-
-    // Active section tracking using IntersectionObserver style behavior
-    const observer = new IntersectionObserver(entries => {
-        const visible = entries.filter(e => e.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (!visible) return;
-        const id = visible.target.getAttribute('id');
-
-        // update nav active tab
-        const tab = document.querySelector(`.primary-nav .nav-tab[data-target="#${id}"]`);
-        if (tab) {
-            document.querySelectorAll('.primary-nav .nav-tab').forEach(t => t.classList.remove('is-active'));
-            tab.classList.add('is-active');
-            const indicator = document.querySelector('.primary-nav .nav-indicator');
-            if (indicator) {
-                const rect = tab.getBoundingClientRect();
-                const parentRect = tab.parentElement.getBoundingClientRect();
-                indicator.style.width = rect.width + 'px';
-                indicator.style.transform = `translateX(${rect.left - parentRect.left}px)`;
-            }
+        // Hero: première tendance
+        const hero = document.querySelector('#home');
+        if (hero && movies && movies.length) {
+            const top = movies[2];
+			console.log(top);
+            const backdrop = top.backdrop_path ? `https://image.tmdb.org/t/p/w1280${top.backdrop_path}` : '';
+            hero.style.background = backdrop ? `url('${backdrop}') center/cover no-repeat` : 'var(--bg-elev)';
+			hero.innerHTML = `
+                <div class="hero-content">
+                    <h1>${(top.title || top.name || 'Tendances')}</h1>
+                </div>
+            `;
         }
-
-        // breadcrumb current
-        const title = visible.target.querySelector('h2, h1')?.textContent?.trim() || id;
-        const crumb = document.getElementById('breadcrumb-current');
-        if (crumb) crumb.textContent = title;
-    }, { rootMargin: '-40% 0px -55% 0px', threshold: [0.1, 0.25, 0.5, 0.75, 1] });
-
-    sections.forEach(sec => observer.observe(sec));
+    } catch (err) {
+        console.error('Erreur de chargement TMDB:', err);
+    }
 }

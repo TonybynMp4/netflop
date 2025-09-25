@@ -90,8 +90,16 @@ body {
 	margin: 0;
 	font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 	color: var(--text);
-	background: linear-gradient(var(--bg),
-			rgb(from var(--brand) r g b / 30%));
+}
+
+*::-webkit-scrollbar {
+    width: .1rem;
+	height: .1rem;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: var(--muted-border);
+    border-radius: 4px
 }
 
 main {
@@ -224,8 +232,22 @@ header {
 .hero {
 	position: relative;
 	display: grid;
+	margin-top: 1rem;
 	min-height: 30vh;
 	place-items: end start;
+	aspect-ratio: 1.85/1 ;
+	overflow: hidden;
+	border-radius: var(--radius-lg);
+
+	/* bordure en overlay, sinon c'est caché par l'image */
+	&::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		border: 2px solid var(--muted-border);
+		z-index: 1;
+	}
 
 	h1 {
 		font-size: clamp(1.5rem, 7vw, 3rem);
@@ -234,19 +256,12 @@ header {
 	}
 
 	p {
-		margin: 0 0 16px;
 		color: var(--muted);
 		font-size: 1rem;
 	}
 
-	.hero-bg {
-		position: absolute;
-		inset: 0;
-	}
-
 	.hero-content {
-		position: relative;
-		padding: 48px 12px 24px;
+		padding: 0 1rem;
 	}
 }
 
@@ -295,6 +310,7 @@ header {
 	border: 1px solid var(--muted-border);
 	border-radius: var(--radius-lg);
 	transition: transform var(--dur-2) var(--ease-out), box-shadow var(--dur-2) var(--ease-out);
+	position: relative;
 
 	.poster {
 		min-width: 150px;
@@ -318,7 +334,6 @@ header {
 	}
 
 	.wide {
-		position: relative;
 
 		.poster {
 			aspect-ratio: 16/9;
