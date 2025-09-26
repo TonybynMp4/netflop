@@ -16,5 +16,5 @@ npm run start
 	- Mobile
 	- Tablette
 	- Desktop
-- Thème sombre, clair, et Sépia sauvegardé en localStorage
+- Défi 1 : Thème sombre, clair, et Sépia sauvegardé en localStorage
 - Breadcrumbs de navigation

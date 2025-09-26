@@ -11,7 +11,7 @@ export function addShowCard(container, item, { wide = false } = {}) {
 
 	const title = item.title || item.name || 'Sans titre';
 	const posterPath = item.poster_path || item.backdrop_path;
-	const poster = imageUrl(posterPath, wide ? 'w780' : 'w342') || 'https://placehold.co/400x600?text=No+Image';
+	const poster = imageUrl(posterPath, wide ? 'w780' : 'w342');
 
 	const type = item.media_type || (item.first_air_date ? 'tv' : 'movie');
 	const href = `/details.html?type=${type}&id=${encodeURIComponent(item.id)}`;
