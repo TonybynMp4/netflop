@@ -3,6 +3,7 @@ const BASE_URL = 'https://api.themoviedb.org/3';
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p';
 const BEARER_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNGI5MDMyNzIyN2M4OGRhYWMxNGMwYmQwYzFmOTNjZCIsIm5iZiI6MTc1ODY0ODMyMS43NDg5OTk4LCJzdWIiOiI2OGQyZDgwMTJhNWU3YzBhNDVjZWNmZWUiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.aylEitwtAH0w4XRk8izJNNkF_bet8sxiC9iI-zSdHbU';
 
+// Add the query parameters to the URL
 function buildUrl(path, params = {}) {
 	const url = new URL(`${BASE_URL}/${path}`);
 	Object.entries(params).forEach(([k, v]) => {
@@ -11,6 +12,7 @@ function buildUrl(path, params = {}) {
 	return url.toString();
 }
 
+// Execute a request to the API
 async function tmdb(path, params) {
 	const url = buildUrl(path, params);
 	const res = await fetch(url, {
@@ -26,6 +28,7 @@ async function tmdb(path, params) {
 	return res.json();
 }
 
+// Get the formatted image URL
 export function imageUrl(path, size = 'w342') {
 	if (!path) return null;
 	return `${IMAGE_BASE_URL}/${size}${path}`;
@@ -68,6 +71,36 @@ export async function fetchMovieCredits(id, { language = 'fr-FR' } = {}) {
 
 export async function fetchTvCredits(id, { language = 'fr-FR' } = {}) {
 	return tmdb(`tv/${id}/credits`, { language });
+}
+
+export async function searchTitles(query, { page = 1, language = 'fr-FR', include_adult = false } = {}) {
+	const q = (query || '').trim();
+	if (!q) {
+		return {
+			page: 1,
+			results: [],
+			total_pages: 0,
+			total_results: 0
+		};
+	}
+
+	// Search both types
+	const data = await tmdb('search/multi', {
+		query: q,
+		page,
+		language,
+		include_adult
+	});
+	const allowedTypes = new Set(['movie', 'tv']);
+	const results = (data.results || []).filter(item => {
+		const type = item.media_type || (item.first_air_date ? 'tv' : 'movie');
+		return allowedTypes.has(type);
+	});
+
+	return {
+		...data,
+		results
+	};
 }
 
 export const TMDB = {

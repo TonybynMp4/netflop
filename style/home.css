@@ -354,27 +354,32 @@ header {
 			display: inline-flex;
 			align-items: center;
 			gap: 8px;
+
+			&:hover {
+				border-color: var(--accent);
+			}
+
+			&:focus {
+				outline: 2px solid var(--accent);
+				outline-offset: 2px;
+			}
+
+			&.is-disabled {
+				opacity: .6;
+				pointer-events: none;
+			}
+
+			&.primary {
+				background: var(--accent);
+				border-color: transparent;
+				color: var(--accent-contrast);
+
+				&:hover {
+					background: rgb(from var(--accent) r g b / 70%);
+				}
+			}
 		}
 
-		.button:hover {
-			border-color: var(--accent);
-		}
-
-		.button:focus {
-			outline: 2px solid var(--accent);
-			outline-offset: 2px;
-		}
-
-		.button.is-disabled {
-			opacity: .6;
-			pointer-events: none;
-		}
-
-		.button.primary {
-			background: var(--accent);
-			border-color: transparent;
-			color: var(--accent-contrast);
-		}
 	}
 }
 
@@ -410,10 +415,6 @@ header {
 		rgba(0, 0, 0, 1) calc(100% - var(--scroll-fade)),
 		transparent 100%
 	);
-
-	&::-webkit-scrollbar {
-		margin: 2rem;
-	}
 }
 
 

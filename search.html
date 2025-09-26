@@ -3,21 +3,21 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-	<title>NetFlop</title>
+	<title>NetFlop | Parcourir</title>
 	<link rel="stylesheet" href="./style/home.css" />
-	<link rel="stylesheet" href="./style/details.css" />
-	<script type="module" src="./js/details.js"></script>
+	<link rel="stylesheet" href="./style/search.css" />
+	<script type="module" src="./js/search.js"></script>
 </head>
 <body>
 	<header>
 		<div>
-			<a class="brand" href="/#home">
+			<a class="brand" href="/index.html#home">
 				<img src="assets/images/logo.png" height="24" alt="NetFlop" />
 			</a>
 
 			<nav class="primary-nav" aria-label="Navigation principale">
 				<a class="nav-tab" href="/index.html#home">Accueil</a>
-				<a class="nav-tab" href="/search.html">Parcourir</a>
+				<a class="nav-tab is-active" href="/search.html">Parcourir</a>
 			</nav>
 
 			<div class="theme-switcher" role="group" aria-label="Changer de thème">
@@ -64,37 +64,50 @@
 		<nav class="breadcrumb" aria-label="Fil d'Ariane">
 			<ol>
 				<li><a href="/index.html#home">Accueil</a></li>
-				<li id="breadcrumb-type"></li>
-				<li aria-current="page" id="breadcrumb-current"></li>
+				<li aria-current="page">Parcourir</li>
 			</ol>
 		</nav>
 	</header>
 
 	<main id="main">
-		<section id="hero" class="section hero" aria-label=""></section>
-
-		<section class="section">
-			<div class="section-header">
-				<h3>Synopsis</h3>
-			</div>
-			<div id="overview"></div>
+		<section class="section search-hero" aria-label="Recherche de contenus">
+				<h1>Parcourir le catalogue</h1>
+				<p>Recherchez des films et séries disponibles sur NetFlop.</p>
+				<form id="search-form" class="search-form" role="search" autocomplete="off">
+					<label class="sr-only" for="search-input">Rechercher un film ou une série</label>
+					<div class="search-input-wrapper">
+						<span class="search-icon" aria-hidden="true">
+							<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+								stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+								class="lucide lucide-search">
+								<circle cx="11" cy="11" r="7"></circle>
+								<line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+							</svg>
+						</span>
+						<input id="search-input" name="query" type="search" placeholder="Film, série, acteur…" minlength="1"
+							aria-describedby="search-feedback" spellcheck="false" />
+						<button type="submit" class="button primary">Rechercher</button>
+					</div>
+				</form>
+				<p id="search-feedback" class="search-feedback" role="status" aria-live="polite"></p>
 		</section>
 
-		<section id="episodes" class="section episodes" hidden>
+		<section id="results-section" class="section" hidden>
 			<div class="section-header">
-				<h3>Épisodes</h3>
-				<label>
-					<select id="season-select" class="select" aria-label="Sélection de la saison"></select>
-				</label>
+				<h2 id="results-title">Résultats</h2>
+				<span id="results-count" class="pill" hidden></span>
 			</div>
-			<div id="episodes-list" class="episodes-list"></div>
+			<div id="results-grid" class="results-grid" aria-live="polite" aria-label="Résultats de recherche"></div>
+			<div class="load-more-wrapper">
+				<button id="load-more" class="button" type="button" hidden>Charger plus</button>
+			</div>
 		</section>
 
-		<section id="cast" class="section" hidden>
+		<section id="suggestions" class="section" aria-label="Suggestions populaires">
 			<div class="section-header">
-				<h3>Casting principal</h3>
+				<h2>Suggestions populaires</h2>
 			</div>
-			<div id="cast-grid" class="cast-grid"></div>
+			<div id="suggestions-grid" class="results-grid"></div>
 		</section>
 	</main>
 
@@ -106,4 +119,5 @@
 		</nav>
 	</footer>
 </body>
+
 </html>
