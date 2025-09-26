@@ -51,9 +51,7 @@ async function renderHeroWithDetails(type, d) {
     const meta = [year, runtime].join(' • ');
 
     const posterPath = d.poster_path || d.backdrop_path;
-    const poster = imageUrl(posterPath, 'w342');
-
-
+    const poster = imageUrl(posterPath, 'w1280');
 
     hero.innerHTML = `
         <div class="hero-video" aria-hidden="true"></div>
