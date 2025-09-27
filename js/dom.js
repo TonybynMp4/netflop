@@ -86,7 +86,7 @@ export async function initHome() {
                     ${overview ? `<p class="hero-overview">${overview.length > 220 ? overview.slice(0, 217) + '…' : overview}</p>` : ''}
 					<div class="hero-actions">
 						<a class="button primary" data-action="play" rel="noopener">Lecture</a>
-						<a class="button" href="/details.html?type=movie&id=${top.id}" rel="noopener">Plus d'infos</a>
+						<a class="button" href="details.html?type=movie&id=${top.id}" rel="noopener">Plus d'infos</a>
 					</div>
                 </div>
             `;
