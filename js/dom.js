@@ -14,7 +14,7 @@ export function addShowCard(container, item, { wide = false } = {}) {
 	const poster = imageUrl(posterPath, wide ? 'w780' : 'w342');
 
 	const type = item.media_type || (item.first_air_date ? 'tv' : 'movie');
-	const href = `/details.html?type=${type}&id=${encodeURIComponent(item.id)}`;
+	const href = `details.html?type=${type}&id=${encodeURIComponent(item.id)}`;
 	card.innerHTML = `
 		<a href="${href}" class="card-link" aria-label="Voir ${escapeHtml(title)}">
 			<img class="poster shimmer" alt="${escapeHtml(title)}" loading="lazy" src="${poster}" />
